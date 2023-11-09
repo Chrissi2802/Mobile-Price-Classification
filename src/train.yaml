@@ -1,0 +1,35 @@
+#---------------------------------------------------------------------------------------------------#
+# File name: train.yaml                                                                             #
+# Autor: Chrissi2802                                                                                #
+# Created on: 26.09.2023                                                                            #
+# Content: Parameters for training.                                                                 #
+#---------------------------------------------------------------------------------------------------#
+
+
+LogisticRegression:
+  penalty: ["l1", "l2"]
+  tol: [0.0001, 0.001, 0.01]
+  C: [0.1, 1, 10, 100]
+  solver: ["saga"]
+  max_iter: [100, 200, 300, 400, 500]
+  multi_class: ["auto", "ovr", "multinomial"]
+  n_jobs: [-1]
+  random_state: [28]
+
+
+RandomForestClassifier:
+  n_estimators: [100, 200, 300]
+  criterion: ["gini", "entropy"]
+  max_depth: [5, 10, 20]
+  min_samples_split: [2, 5, 10]
+  min_samples_leaf: [1, 2, 5]
+  max_features: ["sqrt", "log2"]
+  n_jobs: [-1]
+  random_state: [28]
+
+
+XGBClassifier:
+  booster: ["gbtree", "gblinear", "dart"]
+  eta: [0.01, 0.1, 0.3]
+  seed: [28]
+

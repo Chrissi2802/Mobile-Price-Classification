@@ -1,0 +1,15 @@
+#---------------------------------------------------------------------------------------------------#
+# File name: info.yaml                                                                              #
+# Autor: Chrissi2802                                                                                #
+# Created on: 07.11.2023                                                                            #
+# Content: User defined parameters.                                                                 #
+#---------------------------------------------------------------------------------------------------#
+
+
+dict_params_user:
+  prefix: "."  # Python: ".", Jupyter: "..", Cluster: /home/student17/mpc"
+  random_state: 28
+  test_size: 0.2   # 0.0, 0.2
+  extended_features: True   # False, True
+  mlflow_experiment: "Mobile Price Classification"
+
