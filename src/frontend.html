@@ -1,0 +1,153 @@
+<!--
+#---------------------------------------------------------------------------------------------------#
+# File name: frontend.html                                                                          #
+# Autor: Chrissi2802                                                                                #
+# Created on: 08.11.2023                                                                            #
+# Content: This file provides the frontend.                                                         #
+#---------------------------------------------------------------------------------------------------#
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Price Classification Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+        #left {
+            width: 45%;
+        }
+        #right {
+            width: 45%;
+        }
+        #input-container {
+            text-align: left;
+            font-size: 16px;
+        }
+        #output-container {
+            text-align: left;
+            font-size: 16px;
+        }
+        #input-container, #output-container {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        #button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 50%;
+            margin-top: 20px;
+        }
+        #user-input {
+            width: 100%;
+            height: 100px;
+            font-size: 16px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 0 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mobile Price Classification</h1>
+    <div id="container">
+        <div id="left">
+            <div id="input-container">
+                <label for="user-input">Input:</label>
+                <textarea id="user-input" placeholder="Please enter the features here ..."></textarea>
+            </div>
+        </div>
+        <div id="right">
+            <div id="output-container">
+                <label for="output1">Class:</label>
+                <span id="output1"></span>
+            </div>
+            <div id="output-container">
+                <label for="output2">Probabilities:</label>
+                <span id="output2"></span>
+            </div>
+            <div id="output-container">
+                <label for="output3">Message:</label>
+                <span id="output3"></span>
+            </div>
+        </div>
+    </div>
+    <div id="button-container">
+        <button id="submit-button" class="button">Submit</button>
+        <button id="reset-button" class="button">Reset</button>
+    </div>
+
+    <script>
+        // JavaScript code to define the actions for the buttons
+        const userInput = document.getElementById('user-input');
+        const submitButton = document.getElementById('submit-button');
+        const resetButton = document.getElementById('reset-button');
+        const output1 = document.getElementById('output1');
+        const output2 = document.getElementById('output2');
+        const output3 = document.getElementById('output3');
+
+        submitButton.addEventListener('click', async () => {
+            // Perform processing for input by backend via API
+            const inputText = userInput.value;
+            const apiUrl = 'http://localhost:8000/predict';            
+            const inputData = {
+                data: [
+                    //[842.0, 0.0, 2.2, 0.0, 1.0, 0.0, 7.0, 0.6, 188.0, 2.0, 2.0, 20.0, 756.0, 2549.0, 9.0, 7.0, 19.0, 0.0, 0.0, 1.0]
+                    // Convert string in list of float
+                    inputText.split(',').map(Number)
+                ]
+            };
+
+            // Send API request
+            const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(inputData)
+            });
+
+            if (response.ok) {
+                // Show results from the API
+                const data = await response.json();
+                output1.textContent = data.pred;
+                output2.textContent = data.pred_proba;
+                output3.textContent = 'Successful';
+            } else {
+                console.error('Error with the API request:', response.statusText);
+                output1.textContent = '';
+                output2.textContent = '';
+                output3.textContent = 'Error';
+            }
+        });
+
+        resetButton.addEventListener('click', () => {
+            userInput.value = '';
+            output1.textContent = '';
+            output2.textContent = '';
+            output3.textContent = '';
+        });
+    </script>
+
+</body>
+</html>
